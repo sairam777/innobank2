@@ -43,13 +43,14 @@ accNo:Number=12345678901;
  this.miniStatementService.getService().subscribe(res =>{
    if(res["status"]==200){
 this.data  = JSON.parse(res["_body"]);
+// console.log("data"+this.data);
 this.sampleObj.pop();
 (this.data).forEach(element => {
   if(element.hasOwnProperty("from"))
 {
   
   this.sampleObj.push({
- date:element.date,
+ date:new Date( element.date).toDateString(),
     Chequeno:undefined,
     TransactionRemarks:"",
     withdrawalAmount:undefined,
@@ -60,7 +61,7 @@ this.sampleObj.pop();
 }
 else{
   this.sampleObj.push({
- date:element.date,
+ date:new Date( element.date).toDateString(),
     Chequeno:undefined,
     TransactionRemarks:"",
     withdrawalAmount:element.amount,

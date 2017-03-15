@@ -1,5 +1,5 @@
 export class MiniStatement{
-    date:Date;
+    date:String;
     Chequeno:Number;
     TransactionRemarks:String;
     withdrawalAmount:Number;

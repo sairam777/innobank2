@@ -17,7 +17,7 @@ client:FundTransfer;
 
   ngOnInit() {
     this.transferModes=[];
-     this.client={name:'',bank:'',ifsccode:'',accountnum:undefined ,amount:undefined,date:null,fromAccount:123456789012
+     this.client={name:'',bank:'',ifsccode:'',accountnum:undefined ,amount:undefined,date:null,fromAccount:987654321012
 }
   }
 transfer(client)

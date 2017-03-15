@@ -16,6 +16,9 @@ router.get("/ministatement/:id",function(req,res){
 
     
 });
+router.get("/allstatements/:id",function(req,res){
+     controller.allStatements(req,res); 
+})
 router.post("/detailstatement/:id",function(req,res){
     controller.detailedStatement(req,res);
 })

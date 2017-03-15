@@ -116,9 +116,10 @@ exports.fundTransfer = function(req,res){
            
         if (docs[0] != null && data[0] != null ) {
             var amount = docs[0].totalAmount;
+            if(amount >= parseInt(req.body.amount)){
             var receiverAmount = data[0].totalAmount;
-            docs[0].totalAmount = amount-req.body.amount;
-             transferData.currentBalance = amount-req.body.amount;
+            docs[0].totalAmount = parseInt(amount) - parseInt(req.body.amount);
+             transferData.currentBalance =parseInt( amount)- parseInt(req.body.amount);
             data[0].totalAmount =parseInt( receiverAmount)+parseInt(req.body.amount);
            // data[0].received.push(receivedData);
              receivedData.currentBalance = parseInt( receiverAmount)+parseInt(req.body.amount);
@@ -131,7 +132,9 @@ exports.fundTransfer = function(req,res){
             docs[0].save();
             res.json("success");
             // response.json(docs[0]);
-        }
+        }else{
+            res.json({data:"Insufficient Funds"});
+        }}
         });
 
         }
@@ -187,11 +190,59 @@ exports.miniStatement = function(request, response) {
                 if (length > 8) {
                     ministatementArray = sortedStatement.splice(8, length - 8);
                     console.log(ministatementArray);
-                    response.json(ministatementArray);
+                    response.json(sortedStatement);
                 } else {
                     console.log(sortedStatement);
                     response.json(sortedStatement);
                 }
+            }
+        } else {
+            console.log("account number is not present");
+            response.json({data:"account number is not present"});
+        }
+    });
+}
+
+exports.allStatements = function(request, response) {
+  var  statementArray=[],ministatementArray = [];
+  //  console.log("hello");
+   // console.log(request.params.id );
+    connection.find({ aadharcardNumber: request.params.id }, function(error, data) {
+        if (error) {
+            console.log("error while executing the query");
+            throw error;
+        } else if (data[0] != null) {
+            // objId = data[0]._id;
+            transferredArray = data[0].transfered;
+            receivedArray = data[0].received;
+            // console.log(objId);
+            if (transferredArray[0] == null && receivedArray[0] == null) {
+                console.log("no transactions done yet");
+                response.json("no transactions");
+            } else {
+                console.log("hi");
+                if (transferredArray[0] != null) {
+                  //  console.log("transfer" + transferredArray.length);
+                    for (var i = 0; i < transferredArray.length; i++) {
+                        statementArray.push(transferredArray[i]);
+                        // console.log(statementArray);
+                    }
+                }
+                if (receivedArray[0] != null) {
+                    console.log("receive");
+                    for (var i = 0; i < receivedArray.length; i++) {
+                        statementArray.push(receivedArray[i]);
+                        // console.log(statementArray);
+                    }
+                    // statementArray.push(receivedArray);
+                }
+                // console.log(statementArray);
+                var sortedStatement = statementArray.sort(function(a, b) {
+                    return b.date - a.date
+                });
+                console.log(sortedStatement);
+                length = sortedStatement.length;
+                 response.json(sortedStatement);
             }
         } else {
             console.log("account number is not present");
@@ -239,20 +290,35 @@ exports.detailedStatement = function(request, response) {
                 console.log(request.body);
                 if(length !=0){
                 for (var i = 0; i < length; i++) {
-                    console.log(sortedStatement[i].date);
-                    if (sortedStatement[i].date <= new Date (request.body.toDate)) {
-                        if (sortedStatement[i].date >= new Date ( request.body.fromDate)) {
+                    var date = new Date(sortedStatement[i].date)
+                    //console.log(date.setHours(0));
+                    var date =(sortedStatement[i].date).toDateString();
+                    console.log(new Date(date));
+                    // var date1 = date.slice(0,10);
+                    // console.log(date1);
+                    // console.log(new Date ((new Date ( request.body.fromDate)).toDateString()));
+                    // console.log("called");
+                    //  console.log((new Date (request.body.toDate)).toDateString());
+                     if ((sortedStatement[i].date).toDateString() >= (new Date ( request.body.fromDate)).toDateString()) {
+                   
+                        console.log("1st if called");
+                       if ((sortedStatement[i].date).toDateString() <= (new Date (request.body.toDate)).toDateString()) {
+ console.log("2nd if called");
                             resultantStatement.push(sortedStatement[i]);
                             console.log(resultantStatement);
                                                    
 
                         }
-                    }else{
-                       // console.log(sortedStatement);
-                      response.json({data:"No Records"});
-                }
+                    }
+                    
             }
-         response.json(resultantStatement);
+if(resultantStatement[0] != null)
+{response.json(resultantStatement);}
+else{
+   response.json({data:"No Records"});
+}
+
+         
         }
                 
                 
@@ -264,6 +330,8 @@ exports.detailedStatement = function(request, response) {
         }
     });
 }
+
+
 
 exports.checkAccount = function(req,res){
 

@@ -29,20 +29,22 @@ this.date ={
   }
 
   ngOnInit() {
- this.DetailedService.url="http://localhost:3000/fund/ministatement/123456789012";
+ this.DetailedService.url="http://localhost:3000/fund/allstatements/123456789012";
  this.DetailedService.getService().subscribe(res =>{
   this.sampleData = JSON.parse(res["_body"]);
-console.log(this.sampleData);
 if(this.sampleData["data"]=="No Records"){
 this.isTrue =true;
+this.sampleData["data"]="";
 }
 else{
+  console.log("false...............................................");
+  this.isTrue =false;
   this.details.pop();
 (this.sampleData).forEach(element => {
   if(element.hasOwnProperty("from"))
 {
   this.details.push({
- Date:element.date,
+ Date:new Date( element.date).toDateString(),
     ChequeNo:undefined,
     TransactionRemarks:"",
     withdrawalAmount:undefined,
@@ -53,7 +55,7 @@ else{
 }
 else{
   this.details.push({
- Date:element.date,
+ Date:new Date( element.date).toDateString(),
     ChequeNo:undefined,
     TransactionRemarks:"",
     withdrawalAmount:element.amount,
@@ -62,12 +64,17 @@ else{
     });
 }});}
 
-   console.log(res)});
+   });
   
   }
   
   getData(date){
+    if(new Date(date.fromDate) > new Date(date.toDate)  ){
+      alert("from date should be less than to date")
+    }
+    else{
     this.DetailedService.data=date;
+
        this.DetailedService.url="http://localhost:3000/fund/detailstatement/123456789012";
        
  this.DetailedService.postService().subscribe(res => {
@@ -77,12 +84,20 @@ if(this.sampleData["data"]=="No Records"){
 this.isTrue =true;
 }
 else{
-  this.details.pop();
+  this.isTrue =false;
+  var length = this.details.length;
+  for(var i=0;i< length;i++ ){
+ this.details.pop();
+ console.log("pop");
+  }
+console.log("data"+ this.details);
 (this.sampleData).forEach(element => {
+  var dateString =new Date( element.date).toDateString();
+  console.log(dateString);
   if(element.hasOwnProperty("from"))
 {
   this.details.push({
- Date:element.date,
+ Date:new Date( element.date).toDateString(),
     ChequeNo:undefined,
     TransactionRemarks:"",
     withdrawalAmount:undefined,
@@ -93,7 +108,7 @@ else{
 }
 else{
   this.details.push({
- Date:element.date,
+ Date:new Date( element.date).toDateString(),
     ChequeNo:undefined,
     TransactionRemarks:"",
     withdrawalAmount:element.amount,
@@ -104,6 +119,6 @@ else{
 
    console.log(res)});
   }
-
+  }
 }
 

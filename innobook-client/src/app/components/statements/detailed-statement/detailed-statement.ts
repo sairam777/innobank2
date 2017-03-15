@@ -1,7 +1,7 @@
 export interface Details{
     
      
-       Date:Date;
+       Date:String;
    
      ChequeNo:Number;
    TransactionRemarks:String;

@@ -3,15 +3,15 @@
   <form>
   <div style="margin-top:60px;" class="row">
 
-  <div class="col-md-4">
+  <div class="col-md-3">
 <label for="FromDate">FromDate</label>
 <input [(ngModel)]="date.fromDate" type="date" name="fromDate"/>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
 <label for="ToDate">To date</label>
 <input [(ngModel)]="date.toDate" type="date" name="toDate"/>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-2">
 
 <input (click)="getData(date)" type="submit" name="toDate" value="submit"/>
   </div>
@@ -19,8 +19,10 @@
   </form>
   
   <h2  *ngIf = "isTrue" style="color:red" class="text-center row">No Records Found</h2>
-  <div *ngIf ="!(isTrue)">
-<table class="table table-responsive table-bordered table-hover" style=margin-top:40px; >
+  <div *ngIf ="!(isTrue)" class="row">
+
+    <div class = "table-responsive col-md-8">
+<table class="table table-bordered table-hover" style=margin-top:40px; >
             <thead> 
               <tr>
                 <th>S.no</th>
@@ -33,7 +35,7 @@
               </tr>
               </thead>      
              <tbody >       
-             <tr *ngFor="let detail of details | paginate: {itemsPerPage:itemsperpage,currentPage:page2,id:'1'};let i=index">
+             <tr *ngFor="let detail of details | paginate: {itemsPerPage:5,currentPage:page2,id:'1'};let i=index">
                     <!--<td>{{currentPage }}</td>-->
                     <!--<td>{{itemsPerPage+1}}</td>-->
                       <td>{{5*(page2-1)+i+1}}</td>
@@ -49,7 +51,7 @@
                     </tbody>
                 
                 </table>
-                
+                 
            <pagination-controls
             (pageChange)="page2= $event"
             id="1" maxSize="5"
@@ -57,6 +59,8 @@
                       autoHide="true"> 
 </pagination-controls>
   </div>
+  </div>
+ 
                <!--<pagination-controls (pageChange)=" click($event)" id="1"
                       maxSize="5"
                       directionLinks="true"
