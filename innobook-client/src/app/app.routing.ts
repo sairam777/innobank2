@@ -26,7 +26,8 @@ const appRoutes: Routes=[
      { path: 'forgotpassword', component: forgotpasswordComponent},
      { path: 'createnewaccount', component: createnewaccountComponent}
    ] },
-{ path: '', component: accountsummarymainComponent, children : [
+{ path: 'dashboard', component: accountsummarymainComponent, children : [
+  { path:"",redirectTo:"accountsummary",pathMatch:"full"},
      { path : 'accountsummary', component: accountsummaryComponent},
      { path: 'myprofile', component : editprofileComponent },
  {
@@ -48,4 +49,8 @@ const appRoutes: Routes=[
 ];
 
 
-export const routing :ModuleWithProviders =RouterModule.forRoot(appRoutes);
+export const appRoutingProviders: any[] = [
+
+];
+
+export const routing = RouterModule.forRoot(appRoutes);

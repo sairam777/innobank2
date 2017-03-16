@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import {Ng2PaginationModule} from 'ng2-pagination';
 import {Routes,RouterModule} from '@angular/router';
-import {routing} from './app.routing';
+import {routing,appRoutingProviders} from './app.routing';
 import {ModuleWithProviders} from '@angular/core';
 import { AppComponent } from './app.component';
 import { AdminLoginComponent } from './components/admin/admin-login/admin-login.component';
@@ -72,7 +72,7 @@ enableProdMode();
     Ng2PaginationModule,
     routing
   ],
-  providers: [AppService],
+  providers: [AppService,appRoutingProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
