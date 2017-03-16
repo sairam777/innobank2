@@ -11,6 +11,7 @@ sampleObj :MiniStatement[];
 data:any[];
 name:string="saroj";
 accNo:Number=12345678901;
+isTrue:boolean = true;
   constructor (private miniStatementService:AppService ) {
     this.sampleObj  =[{
  date:null,
@@ -39,12 +40,16 @@ accNo:Number=12345678901;
    }
 
   ngOnInit() {
-    this.miniStatementService.url="http://localhost:3000/fund/ministatement/123456789012";
+    this.miniStatementService.url="http://localhost:3000/fund/ministatement/888888888888";
  this.miniStatementService.getService().subscribe(res =>{
    if(res["status"]==200){
 this.data  = JSON.parse(res["_body"]);
-// console.log("data"+this.data);
+console.log(this.data);
 this.sampleObj.pop();
+if(this.data["data"] != "no transactions"){
+  this.isTrue = false;
+  
+  console.log(this.data[0]);
 (this.data).forEach(element => {
   if(element.hasOwnProperty("from"))
 {
@@ -68,7 +73,10 @@ else{
     DepositAmount:undefined,
     BalanceAmount:element.currentBalance,
     })
-}});
+}});}
+else{
+  this.isTrue = true;
+}
   console.log(res["_body"])}});
   }
 

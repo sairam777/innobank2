@@ -8,4 +8,5 @@ export class newaccount_data {
     gender:string;
     dob:string;
     address:string;
+    deposit:number;
 }

@@ -22,7 +22,8 @@ user:newaccount_data;
     pan:"",
     gender:"",
     dob:"",
-    address:""
+    address:"",
+    deposit:undefined
   }
   }
   data;
@@ -31,7 +32,7 @@ user:newaccount_data;
   CreateUser(user){
     if(this.user.fname == "" ||this.user.lname == ""||this.user.email == ""||this.user.mobile ==undefined
     ||this.user.aadhar == undefined||this.user.pan == ""||this.user.gender == ""||this.user.dob == ""
-    ||this.user.address == ""){
+    ||this.user.address == ""||this.user.deposit == undefined){
       alert("Please Enter All Fields.");
     }else{
     this.registerService.url="http://localhost:3000/users/createnewaccount";
@@ -48,6 +49,9 @@ user:newaccount_data;
          }else if(this.data == 1){
             this.router.navigate(["register"]);
              alert('Register Successfully');
+         }else if(this.data == 2){
+            this.router.navigate(["createnewaccount"]);
+             alert('Initial deposit should be more than 5000.');
          }
 
     });

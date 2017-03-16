@@ -12,8 +12,10 @@
         Dispalying 1-8 of 8 results
       </div>
   </div>
-  <div class="tex-center">
-  <table class="table table-bordered table-responsive">
+  <h2  *ngIf = "isTrue" style="color:red" class="text-center row">No Records Found</h2>
+   <div *ngIf ="!(isTrue)" class="row">
+  <div class="tex-center table-responsive">
+  <table class="table table-bordered ">
     <tr>
     <th>
       S.NO
@@ -52,4 +54,5 @@
         
   </table>
   </div>
+   </div>
 </div>

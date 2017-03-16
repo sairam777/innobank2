@@ -8,7 +8,7 @@ import { Details,DateClass }    from './detailed-statement';
 })
 export class DetailedStatementComponent implements OnInit {
 details:Details[];
-isTrue:boolean =false;
+isTrue:boolean =true;
 date:DateClass;
 page2:number = 1;
 sampleData:any[];
@@ -29,7 +29,7 @@ this.date ={
   }
 
   ngOnInit() {
- this.DetailedService.url="http://localhost:3000/fund/allstatements/123456789012";
+ this.DetailedService.url="http://localhost:3000/fund/allstatements/888888888888";
  this.DetailedService.getService().subscribe(res =>{
   this.sampleData = JSON.parse(res["_body"]);
 if(this.sampleData["data"]=="No Records"){
@@ -40,6 +40,7 @@ else{
   console.log("false...............................................");
   this.isTrue =false;
   this.details.pop();
+  if(this.sampleData["data"] != "no transactions"){
 (this.sampleData).forEach(element => {
   if(element.hasOwnProperty("from"))
 {
@@ -63,6 +64,10 @@ else{
     balanceAmount:element.currentBalance,
     });
 }});}
+else{
+  this.isTrue = true;
+}
+}
 
    });
   

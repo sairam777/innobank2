@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var connection = require("./userProfileSchema");
 
 // Create New Account
+// Create New Account
 exports.createAccount = function(req, res) {
 
         var data = connection({
@@ -16,7 +17,9 @@ exports.createAccount = function(req, res) {
             aadharcardNumber: req.body.aadhar,
             createdDate: '',
             isActivated: false,
+            totalAmount:req.body.deposit,
         });
+        console.log(data);
         // invalid  input data
         // if (data.firstName == "" || data.lastName == "" || data.email == "" || data.mobileNumber == "" || data.gender == "" ||
         //     data.dob == "" || data.pancardNumber == "" || data.aadharcardNumber == "" || data.address == "") {
@@ -28,10 +31,10 @@ exports.createAccount = function(req, res) {
 
 
             if (docs[0] == null) {
-
-                //create new bank account
+                if(req.body.deposit >= 5000){
+                    //create new bank account
                 data.save(function(err, data) {
-
+                    console.log(data);
                     if (err) {
                         throw err
                     } else {
@@ -39,6 +42,10 @@ exports.createAccount = function(req, res) {
                         res.json(1);
                     }
                 })
+                }else{
+                    res.json(2);
+                }
+                
             } else {
                 res.json(0);
             }
@@ -99,7 +106,7 @@ exports.myprofile = function(req, res) {
 }
 //fundTransfer
 exports.fundTransfer = function(req,res){
-     var from = req.body.fromAccount
+     var from = req.body.fromAccount;
     var to = req.body.accountnum; 
     var transferData =
         {amount : req.body.amount,date:req.body.date, to :to, currentBalance:undefined};
@@ -107,7 +114,7 @@ exports.fundTransfer = function(req,res){
    
     connection.find({ aadharcardNumber:from},function(err,docs){
 
-       console.log(docs);
+      // console.log(docs);
         if(err)
         throw err;
         else{
@@ -124,13 +131,13 @@ exports.fundTransfer = function(req,res){
            // data[0].received.push(receivedData);
              receivedData.currentBalance = parseInt( receiverAmount)+parseInt(req.body.amount);
             docs[0].transfered.push(transferData);
-            console.log( docs[0].transfered);
+            //console.log( docs[0].transfered);
              
             data[0].received.push(receivedData);
-            console.log(  data[0].received);
+            //console.log(  data[0].received);
             data[0].save();
             docs[0].save();
-            res.json("success");
+            res.json({data:"success"});
             // response.json(docs[0]);
         }else{
             res.json({data:"Insufficient Funds"});
@@ -163,9 +170,9 @@ exports.miniStatement = function(request, response) {
             // console.log(objId);
             if (transferredArray[0] == null && receivedArray[0] == null) {
                 console.log("no transactions done yet");
-                response.json("no transactions");
+                response.json({data:"no transactions"});
             } else {
-                console.log("hi");
+              //  console.log("hi");
                 if (transferredArray[0] != null) {
                   //  console.log("transfer" + transferredArray.length);
                     for (var i = 0; i < transferredArray.length; i++) {
@@ -218,7 +225,7 @@ exports.allStatements = function(request, response) {
             // console.log(objId);
             if (transferredArray[0] == null && receivedArray[0] == null) {
                 console.log("no transactions done yet");
-                response.json("no transactions");
+                response.json({data:"no transactions"});
             } else {
                 console.log("hi");
                 if (transferredArray[0] != null) {
@@ -264,6 +271,7 @@ exports.detailedStatement = function(request, response) {
             //console.log(objId);
             if (transferredArray[0] == null && receivedArray[0]== null) {
                 console.log("no transactions done yet");
+                                response.json({data:"no transactions"});
             } else {
                 if (transferredArray[0]!= null) {
                     console.log("transfer" + transferredArray.length);
@@ -294,11 +302,7 @@ exports.detailedStatement = function(request, response) {
                     //console.log(date.setHours(0));
                     var date =(sortedStatement[i].date).toDateString();
                     console.log(new Date(date));
-                    // var date1 = date.slice(0,10);
-                    // console.log(date1);
-                    // console.log(new Date ((new Date ( request.body.fromDate)).toDateString()));
-                    // console.log("called");
-                    //  console.log((new Date (request.body.toDate)).toDateString());
+                  
                      if ((sortedStatement[i].date).toDateString() >= (new Date ( request.body.fromDate)).toDateString()) {
                    
                         console.log("1st if called");

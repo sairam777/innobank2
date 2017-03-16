@@ -41,9 +41,28 @@ data:any;
       ];
      this.dataObj =JSON.parse(this.data);
      console.log(JSON.parse(this.data));
-     console.log(this.dataObj[0]);
+      if(this.dataObj[0]!=null){
+ console.log(this.dataObj[0]);
      this.user = this.dataObj[0];
      console.log(this.user);
+      }
+  //     else{
+  //         this.user ={
+  //    firstName: "",
+  //   // lastName: string;
+  //   email: "",
+  //   // password: string;
+  //   mobileNumber: undefined,
+  //   // gender: string;
+  //   dob: null,
+  //   // userID: string;
+  //   address: "",
+  //   pancardNumber: "",
+  //   aadharcardNumber: undefined,
+  //   // createdDate: Date;
+  // }
+    //  }
+    
     })
   }
 
