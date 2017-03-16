@@ -37,7 +37,7 @@ export class UserLoginComponent implements OnInit {
             if(this.response.admin === true){
                 this.router.navigate(['accountrequests']);
             }else{
-                this.router.navigate(['/accountsummary']);
+                this.router.navigate(['/dashboard']);
             }
             
           }
